@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rikito Co. Ltd - Building Trust, Delivering Quality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #4B5563;
+        }
+        /* Style for the semi-transparent overlay on top of the hero images */
+        .hero-overlay {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+        }
+
+        .text-blue-700 { color: #1D4ED8; }
+        .bg-blue-700 { background-color: #1D4ED8; }
+        .text-green-600 { color: #16A34A; }
+        .bg-green-600 { background-color: #16A34A; }
+        .text-gray-600 { color: #4B5563; }
+        .border-gray-300 { border-color: #D1D5DB; }
+
+        .image-slider-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        .image-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 400%; /* 4 images */
+            height: 100%;
+            pointer-events: none; /* Make the slider background not interactive */
+        }
+        .image-slider img {
+            width: 25%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .nav-link.active {
+            border-bottom: 2px solid #1D4ED8;
+            font-weight: 600;
+        }
+
+        /* Custom styles for the org chart */
+        .org-chart .node {
+            display: inline-block;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #E5E7EB;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+        }
+        .org-chart .manager {
+            background-color: #DBEAFE;
+            border: 2px solid #3B82F6;
+        }
+        .org-chart .title {
+            font-weight: 600;
+            color: #1F2937;
+        }
+        .org-chart .name {
+            font-size: 0.875rem;
+            color: #4B5563;
+        }
+
+        /* Connecting lines and arrows for hierarchy visualization */
+        .org-chart .line-vertical {
+            width: 2px;
+            height: 30px;
+            background-color: #9CA3AF;
+        }
+        .org-chart .line-horizontal {
+            width: 100%;
+            height: 2px;
+            background-color: #9CA3AF;
+        }
+        .org-chart .node-connection {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .org-chart .node-group {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-blue-700">Rikito Co. Ltd</a>
+            <div class="hidden md:flex space-x-8 text-gray-600 font-medium">
+                <a href="#home" class="nav-link hover:text-blue-700 transition">Home</a>
+                <a href="#about" class="nav-link hover:text-blue-700 transition">About Us</a>
+                <a href="#leadership" class="nav-link hover:text-blue-700 transition">Leadership</a>
+                <a href="#services" class="nav-link hover:text-blue-700 transition">Services</a>
+                <a href="#projects" class="nav-link hover:text-blue-700 transition">Projects</a>
+                <a href="#equipment" class="nav-link hover:text-blue-700 transition">Equipment</a>
+                <a href="#contact" class="nav-link hover:text-blue-700 transition">Contact Us</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-600 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="md:hidden bg-white shadow-lg hidden">
+            <a href="#home" class="block py-2 px-4 text-gray-600 hover:bg-gray-200">Home</a>
+            <a href="#about" class="block py-2 px-4 text-gray-600 hover:bg-gray-200">About Us</a>
+            <a href="#leadership" class="block py-2 px-4 text-gray-600 hover:bg-gray-200">Leadership</a>
+            <a href="#services" class="block py-2 px-4 text-gray-600 hover:bg-gray-200">Services</a>
+            <a href="#projects" class="block py-2 px-4 text-gray-600 hover:bg-gray-200">Projects</a>
+            <a href="#equipment" class="block py-2 px-4 text-gray-600 hover:bg-gray-200">Equipment</a>
+            <a href="#contact" class="block py-2 px-4 text-gray-600 hover:bg-gray-200">Contact Us</a>
+        </div>
+    </header>
+
+    <section id="home" class="relative w-full h-screen flex items-center justify-center text-center p-5">
+        <div class="image-slider-container absolute inset-0">
+            <div id="image-slider" class="image-slider">
+                <!-- All images in the slider have been updated to your new, high-quality pictures -->
+                <img src="images/new6.jpg" onerror="this.src='https://placehold.co/1280x720/E5E7EB/4B5563?text=Image+Not+Found'">
+                <img src="images/new7.jpg" onerror="this.src='https://placehold.co/1280x720/E5E7EB/4B5563?text=Image+Not+Found'">
+                <img src="images/new8.jpg" onerror="this.src='https://placehold.co/1280x720/E5E7EB/4B5563?text=Image+Not+Found'">
+                <img src="images/new10.jpg" onerror="this.src='https://placehold.co/1280x720/E5E7EB/4B5563?text=Image+Not+Found'">
+            </div>
+        </div>
+
+        <div class="hero-overlay"></div>
+
+        <div class="relative z-20 p-8 rounded-lg">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">Rikito Co. Ltd</h1>
+            <p class="text-lg md:text-2xl text-white font-medium mb-8 drop-shadow-lg">Building Trust, Delivering Quality</p>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <a href="#services" class="bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-blue-800 transition transform hover:scale-105">Our Services</a>
+                <a href="#contact" class="bg-white text-blue-700 font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-gray-200 transition transform hover:scale-105">Request a Quote</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-4">About Us</h2>
+            <p class="text-center text-gray-600 text-lg mb-12 max-w-2xl mx-auto">
+                Rikito Co. Ltd is a privately owned South Sudan-based company established in 2018. We have built a reputation for delivering quality projects on time, serving governments, NGOs, and private clients.
+            </p>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="relative w-full h-96 rounded-lg shadow-xl overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image2.jpg" alt="Completed building project" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Our Mission & Vision</h3>
+                        <p class="text-gray-600">
+                            Our Mission is to provide exceptional construction and supply services that exceed client expectations, contribute to national development, and adhere to the highest standards of quality, safety, and environmental stewardship. </p>
+                         <p>  Our Vision is to be the most trusted and sought-after contractor in South Sudan.
+                        </p>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Quality, Health, Safety, and Environment (QHSE)</h3>
+                        <p class="text-gray-600">
+                            We are deeply committed to creating a safe working environment and minimizing our ecological footprint. Every project we undertake is executed with a focus on superior materials, rigorous safety protocols, and responsible waste management.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="leadership" class="py-16 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-12">Our Leadership</h2>
+            <div class="grid md:grid-cols-2 gap-8 justify-center">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center text-center p-6 transform transition hover:scale-105">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/nelbo0.jpg" alt="Managing Director" class="w-48 h-50 rounded-full object-cover mb-4 border-4 border-blue-700" onerror="this.src='https://placehold.co/200x200/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <h3 class="text-2xl font-bold text-gray-800">Mr. Nelson Kumbonyeki Gibson</h3>
+                    <p class="text-blue-700 font-semibold mb-2">Managing Director</p>
+                    <p class="text-gray-600 mb-4">Based in Yambio, Western Equatoria State</p>
+                    <p class="text-gray-600">
+                        As our founder and leader, Mr. Nelson guides our company's vision and strategy, ensuring we remain committed to excellence, integrity, and client satisfaction in every endeavor.
+                    </p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col items-center text-center p-6 transform transition hover:scale-105">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image27.jpg" alt="Project Engineer" class="w-48 h-50 rounded-full object-cover mb-4 border-4 border-blue-700" onerror="this.src='https://placehold.co/200x200/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <h3 class="text-2xl font-bold text-gray-800">Eng. Miyego Malick Ezadine</h3>
+                    <p class="text-blue-700 font-semibold mb-2">Project Engineer</p>
+                    <p class="text-gray-600 mb-4">Based in Juba, Central Equatoria State</p>
+                    <p class="text-600">
+                        Eng. Malick oversees the technical execution of our projects, applying his expertise to ensure all construction works meet the highest standards of engineering and safety.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="org-chart" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-12">Organizational Chart</h2>
+            <div class="org-chart flex flex-col items-center">
+                <!-- Top Level: Managing Director -->
+                <div class="node-connection">
+                    <div class="node manager mb-4">
+                        <div class="title">Managing Director</div>
+                    </div>
+                    <div class="line-vertical"></div>
+                </div>
+
+                <!-- Middle Level: Departments (report to Managing Director) -->
+                <div class="node-group">
+                    <div class="node-connection">
+                        <div class="line-vertical"></div>
+                        <div class="node mb-4">
+                            <div class="title">Project Engineer</div>
+                        </div>
+                    </div>
+                    <div class="line-horizontal w-full"></div>
+                    <div class="node-connection">
+                        <div class="line-vertical"></div>
+                        <div class="node mb-4">
+                            <div class="title">Transportation and Delivery</div>
+                        </div>
+                    </div>
+                    <div class="line-horizontal w-full"></div>
+                    <div class="node-connection">
+                        <div class="line-vertical"></div>
+                        <div class="node mb-4">
+                            <div class="title">Admin/Finance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Second Tier Reports (report to their respective managers) -->
+                <div class="flex justify-center w-full mt-4">
+                    <!-- Project Engineer Reports -->
+                    <div class="flex flex-col items-center w-1/3">
+                        <div class="line-vertical"></div>
+                        <div class="line-horizontal w-full mb-2"></div>
+                        <div class="node-group">
+                            <div class="node-connection">
+                                <div class="line-vertical"></div>
+                                <div class="node mb-4">
+                                    <div class="title">Site Supervisor</div>
+                                </div>
+                            </div>
+                            <div class="line-horizontal w-full"></div>
+                            <div class="node-connection">
+                                <div class="line-vertical"></div>
+                                <div class="node mb-4">
+                                    <div class="title">Site Engineer</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Spacer for the middle tier (Transportation) -->
+                    <div class="w-1/3"></div>
+
+                    <!-- Admin/Finance Reports -->
+                    <div class="flex flex-col items-center w-1/3">
+                        <div class="line-vertical"></div>
+                        <div class="line-horizontal w-full mb-2"></div>
+                        <div class="node-group">
+                            <div class="node-connection">
+                                <div class="line-vertical"></div>
+                                <div class="node mb-4">
+                                    <div class="title">Logistic and Procurement Officer</div>
+                                </div>
+                            </div>
+                            <div class="line-horizontal w-full"></div>
+                            <div class="node-connection">
+                                <div class="line-vertical"></div>
+                                <div class="node mb-4">
+                                    <div class="title">Operation Manager</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Level: Masons, Welders, etc. (report to Site Supervisor) -->
+                <div class="flex flex-col items-center mt-4">
+                    <div class="line-vertical"></div>
+                    <div class="line-horizontal w-full mb-2"></div>
+                    <div class="node-group">
+                        <div class="node-connection">
+                            <div class="line-vertical"></div>
+                            <div class="node mb-4">
+                                <div class="title">Masons</div>
+                            </div>
+                        </div>
+                        <div class="line-horizontal w-full"></div>
+                        <div class="node-connection">
+                            <div class="line-vertical"></div>
+                            <div class="node mb-4">
+                                <div class="title">Welders</div>
+                            </div>
+                        </div>
+                        <div class="line-horizontal w-full"></div>
+                        <div class="node-connection">
+                            <div class="line-vertical"></div>
+                            <div class="node mb-4">
+                                <div class="title">Plumbers</div>
+                            </div>
+                        </div>
+                        <div class="line-horizontal w-full"></div>
+                        <div class="node-connection">
+                            <div class="line-vertical"></div>
+                            <div class="node mb-4">
+                                <div class="title">Electricians</div>
+                            </div>
+                        </div>
+                        <div class="line-horizontal w-full"></div>
+                        <div class="node-connection">
+                            <div class="line-vertical"></div>
+                            <div class="node mb-4">
+                                <div class="title">Painters</div>
+                            </div>
+                        </div>
+                        <div class="line-horizontal w-full"></div>
+                        <div class="node-connection">
+                            <div class="line-vertical"></div>
+                            <div class="node mb-4">
+                                <div class="title">Carpenters</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="py-16 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-12">Our Services</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transform transition hover:scale-105">
+                    <div class="bg-blue-100 p-4 rounded-full mb-4">
+                        <svg class="w-12 h-12 text-blue-700" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zM12 17.1l-6-3V8.9l6 3v5.2zm8-5.2l-6 3V8.9l6-3v5.2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Building Construction</h3>
+                    <p class="text-gray-600">From residential homes to institutional buildings, we manage all phases of construction with precision and skill.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transform transition hover:scale-105">
+                    <div class="bg-blue-100 p-4 rounded-full mb-4">
+                        <svg class="w-12 h-12 text-blue-700" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 12v2.5a.5.5 0 01-1 0V13h-2v1.5a.5.5 0 01-1 0V13h-2v1.5a.5.5 0 01-1 0V13h-2v1.5a.5.5 0 01-1 0V13H6v-1h13zm0-2h-3v2h3v-2zm-4 0h-3v2h3v-2zm-4 0h-3v2h3v-2zm-4 0H5v2H2v-2h3zm12-4H5v2h12v-2z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Electrical Installation</h3>
+                    <p class="text-gray-600">Our certified electricians provide professional and safe electrical installation and maintenance services for all buildings.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transform transition hover:scale-105">
+                    <div class="bg-blue-100 p-4 rounded-full mb-4">
+                        <svg class="w-12 h-12 text-blue-700" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17 10h-2V6c0-2.76-2.24-5-5-5S5 3.24 5 6v4H3v14h14V10zM12 3c1.65 0 3 1.35 3 3v4H7V6c0-1.65 1.35-3 3-3zm5 20H7V12h10v11z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Plumbing Works</h3>
+                    <p class="text-gray-600">We offer comprehensive plumbing solutions, ensuring efficient and reliable water and drainage systems for your projects.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 flex flex-col items-center text-center transform transition hover:scale-105">
+                    <div class="bg-blue-100 p-4 rounded-full mb-4">
+                        <svg class="w-12 h-12 text-blue-700" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L4.5 14h15L12 2zM12 18a2 2 0 100-4 2 2 0 000 4z"></path></svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">General Merchandise</h3>
+                    <p class="text-gray-600">We are a trusted supplier of high-quality construction materials, equipment, and general goods to support your operations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-12">Our Projects</h2>
+
+            <!-- New large space for project description -->
+            <div class="bg-gray-100 p-8 rounded-xl shadow-lg mb-8">
+                <p class="text-xl font-semibold text-gray-800 mb-2">Featured Project Description</p>
+                <p class="text-gray-600"></p>
+            </div>
+            
+            <h3 class="text-2xl font-bold text-center text-gray-800 mb-8">Recent Completed Projects</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <div class="rounded-xl shadow-lg overflow-hidden">
+                    <img src="images/work7.jpg" alt="Completed building with a modern brick facade." class="w-full h-96 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+                <div class="rounded-xl shadow-lg overflow-hidden">
+                    <img src="images/work1.jpg" alt="Construction team members reviewing site plans." class="w-full h-96 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+                <div class="rounded-xl shadow-lg overflow-hidden">
+                    <img src="images/work4.jpg" alt="Interior view of a building in progress with scaffolding." class="w-full h-96 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+                <div class="rounded-xl shadow-lg overflow-hidden">
+                    <img src="images/work6.jpg" alt="A construction vehicle working at a project site." class="w-full h-96 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+            </div>
+
+            <div class="flex justify-center mb-8">
+            </div>
+            <div id="project-idea-output" class="hidden mb-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                <h3 class="text-xl font-bold text-blue-700 mb-2">Project Idea:</h3>
+                <div id="project-idea-content" class="text-gray-700 leading-relaxed"></div>
+            </div>
+            <div id="loading-spinner" class="hidden text-center text-gray-600">
+                <svg class="animate-spin h-8 w-8 text-blue-700 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <p class="mt-2">Generating a new idea...</p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image5.jpg" alt="Community Health Clinic" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Community Health Clinic</h3>
+                        <p class="text-gray-600 mb-4">
+                            Construction of a new health clinic to serve the local community. Delivered on time and within budget for a major NGO.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image18.jpg" alt="Residential House Construction" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Residential Apartment Build</h3>
+                        <p class="text-gray-600 mb-4">
+                            Complete construction of a private residential apartment, showcasing our expertise in modern building techniques.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image14.jpg" alt="Masonry Work" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Perimeter Wall Construction</h3>
+                        <p class="text-gray-600 mb-4">
+                            Civil engineering project to construct a sturdy and secure perimeter wall for a commercial property.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image21.jpg" alt="Structural Foundation" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Government Office Building</h3>
+                        <p class="text-gray-600 mb-4">
+                            Managed the full-scale construction of a new government administrative office, from foundation to finishing touches, meeting all specifications.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image30.png" alt="Water tank construction" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Water Storage Tank Project</h3>
+                        <p class="text-gray-600 mb-4">
+                            Engineered and constructed a large-capacity water storage tank to improve local water infrastructure and supply for a growing community.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/new31.jpg" alt="Bridge construction" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Design work project</h3>
+                        <p class="text-gray-600 mb-4">
+                            Undertook the civil engineering work for a designing projects.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <!-- New projects to make it 9 total -->
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image1.jpg" alt="School renovation" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Community School Renovation</h3>
+                        <p class="text-gray-600 mb-4">
+                            Renovated a local school, upgrading classrooms and facilities to provide a better learning environment for students.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/new8.jpg" alt="Road construction" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Art work Development</h3>
+                        <p class="text-gray-600 mb-4">
+                            creative work of zande design in yambio and juba 
+    
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+                <div class="bg-gray-100 rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image9.jpg" alt="Warehouse building" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Household Building</h3>
+                        <p class="text-gray-600 mb-4">
+                            Construction of household near completion  with men at work.
+                        </p>
+                        <a href="#" class="text-blue-700 font-semibold hover:underline">more details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="equipment" class="py-16 bg-gray-200">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-12">Our Equipment & Capacity</h2>
+            <p class="text-center text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+                We possess a modern fleet of well-maintained equipment, ensuring we have the readiness and capacity to execute large-scale projects efficiently and reliably.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 items-center">
+                <div class="rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/new5.jpg" alt="Tipper Truck" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+                <div class="rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image10.jpg" alt="Tipper Truck 2" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+                <div class="rounded-xl shadow-lg overflow-hidden">
+                    <!-- Replace this with your own high-quality image. -->
+                    <img src="images/image21.jpg" alt="Building under construction" class="w-full h-64 object-cover" onerror="this.src='https://placehold.co/900x600/E5E7EB/4B5563?text=Image+Not+Found'">
+                </div>
+                <div class="space-y-4 md:col-span-2 lg:col-span-1">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Our Fleet Includes:</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li>Tipper Trucks & Pickup Trucks</li>
+                        <li>Concrete Mixers & Compactors</li>
+                        <li>Generators & Welding Machines</li>
+                        <li>Full sets of tools for all trades</li>
+                        <li>And more...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-700 mb-12">Get In Touch</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Contact Details</h3>
+                        <p class="text-gray-600">We're ready to partner with you on your next project. Contact us today.</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Email:</p>
+                        <a href="mailto:rikitoco@gmail.com" class="text-blue-700 hover:underline">rikitoco@gmail.com</a>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Phone Numbers:</p>
+                        <p class="text-gray-600">+211-911-445130</p>
+                        <p class="text-gray-600">+211-925-782710</p>
+                        <p class="text-gray-600">+211-924-975069</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-600 font-medium">Office Locations:</p>
+                        <p class="text-gray-600">Yambio, Western Equatoria State, South Sudan</p>
+                        <p class="text-gray-600">Juba, Central Equatoria State, South Sudan</p>
+                    </div>
+                    <div class="rounded-xl shadow-lg overflow-hidden">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1576472.9696290858!2d29.975!3d4.715!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f8.5!3m3!1m2!1s0x170c0c169b12a803%3A0x4d61c6b1a37c0f1c!2sJuba!5e0!3m2!1sen!2ske!4v1700000000000!5m2!1sen!2ske" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+                <div class="bg-gray-100 p-8 rounded-xl shadow-lg">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                            <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                            <input type="email" id="email" name="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700">
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
+                            <input type="text" id="subject" name="subject" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700">
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Your Message</label>
+                            <textarea id="message" name="message" rows="4" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-700 focus:ring-blue-700"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-700 text-white font-semibold py-3 px-4 rounded-md hover:bg-blue-800 transition">Send Message</button>
+                    </form>
+                    <div id="form-status" class="mt-4 text-center text-sm font-medium"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2025 Rikito Co. Ltd. All rights reserved.</p>
+            <div class="mt-4">
+                <a href="#home" class="text-gray-300 hover:text-white mx-2">Home</a> |
+                <a href="#about" class="text-gray-300 hover:text-white mx-2">About Us</a> |
+                <a href="#services" class="text-gray-300 hover:text-white mx-2">Services</a> |
+                <a href="#contact" class="text-gray-300 hover:text-white mx-2">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Image Slider Functionality
+        const slider = document.getElementById('image-slider');
+        const images = document.querySelectorAll('#image-slider img');
+        let currentIndex = 0;
+
+        // Function to update the slider position
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 25}%)`;
+        }
+
+        // Wait for all images to load before starting the slider
+        window.addEventListener('load', () => {
+            // Start the image transition every 5 seconds
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % images.length;
+                updateSlider();
+            }, 5000);
+        });
+
+        // Mobile Menu Functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Form Submission Logic
+        const form = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            formStatus.textContent = 'Submitting...';
+            
+            // This is a placeholder. In a real application, you would send this data to a backend server.
+            setTimeout(() => {
+                form.reset();
+                formStatus.textContent = 'Thank you for your message! We will get back to you shortly.';
+                formStatus.classList.remove('text-red-600');
+                formStatus.classList.add('text-green-600');
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
